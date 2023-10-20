@@ -28,9 +28,14 @@ const studentsController = async (req, res) => {
       modules On (modules.ModuleID = usermodules.ModuleID)
   WHERE users.UserTypeID = ${userType} AND modules.ModuleID IN (
       SELECT usermodules.ModuleID FROM usermodules
-      )`;
+      `;
   let sql = `SELECT ${feilds} FROM ${extendTable}`;
-  if (id) sql += ` WHERE  ${idField} = ${id}`;
+  if (id) {
+    sql += ` WHERE  ${idField} = ${id})`;
+  } else {
+    sql += `)`;
+  }
+  console.log(sql);
   // Execute query
   let isSuccess = false;
   let message = "";
@@ -52,7 +57,7 @@ const studentsController = async (req, res) => {
 };
 //Endpoints ---------------------------------------
 app.get(`/api/students/moduleLeader`, studentsController);
-app.get(`/api/students/modulerLeader/:id`, studentsController);
+app.get(`/api/students/moduleLeader/:id`, studentsController);
 //Start server ------------------------------------
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
