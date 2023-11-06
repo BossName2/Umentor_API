@@ -7,7 +7,47 @@ const app = new express();
 //Config middleware --------------------------------
 
 //Controllers --------------------------------------
+const userAddController = async (req, res) => {
+  const id = req.body.id;
+  const firstName = req.body.id;
+  const lastName = req.body.id;
+  const email = req.body.id;
+  const userTypeID = req.body.id;
+  const userImageURL = req.body.id;
+  //Build SQL
+  const table = "users";
+  const feilds = [
+    `UserID`,
+    `FirstName`,
+    `LastName`,
+    `Email`,
+    `UserTypeID`,
+    `UserImageURL`,
+  ];
+  const values = [id, firstName, lastName, email, userTypeID, userImageURL];
 
+  let sql = `INSERT INTO ${table} (${feilds}) VALUES(${values})`;
+  console.log(sql);
+  // Execute query
+  let isSuccess = false;
+  let message = "";
+  let result = null;
+  try {
+    [result] = await database.query(sql);
+    if (result.lenght === 0) message = "No records found";
+    else {
+      isSuccess = true;
+      message = "record successfully added";
+    }
+  } catch (error) {
+    message = `Failed to execute query: ${error.message}`;
+  }
+  // Responses
+  isSuccess
+    ? res.status(200).json(result)
+    : res.status(400).json({ message: message });
+};
+//-----------------------------
 const studentsController = async (req, res) => {
   const id = req.params.id;
   //Build SQL
@@ -58,6 +98,7 @@ const studentsController = async (req, res) => {
 //Endpoints ---------------------------------------
 app.get(`/api/students/moduleLeader`, studentsController);
 app.get(`/api/students/moduleLeader/:id`, studentsController);
+app.post(`/api/students`, userAddController);
 //Start server ------------------------------------
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
