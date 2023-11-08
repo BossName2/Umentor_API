@@ -4,16 +4,19 @@ import database from "./database.js";
 
 //Config express app -------------------------------
 const app = new express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 //Config middleware --------------------------------
 
 //Controllers --------------------------------------
 const userAddController = async (req, res) => {
+  console.log(req.body);
   const id = req.body.id;
-  const firstName = req.body.id;
-  const lastName = req.body.id;
-  const email = req.body.id;
-  const userTypeID = req.body.id;
-  const userImageURL = req.body.id;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const email = req.body.email;
+  const userTypeID = req.body.userTypeID;
+  const userImageURL = req.body.userImageURL;
   //Build SQL
   const table = "users";
   const feilds = [
@@ -24,7 +27,14 @@ const userAddController = async (req, res) => {
     `UserTypeID`,
     `UserImageURL`,
   ];
-  const values = [id, firstName, lastName, email, userTypeID, userImageURL];
+  const values = [
+    id,
+    `"${firstName}"`,
+    `"${lastName}"`,
+    `"${email}"`,
+    userTypeID,
+    `"${userImageURL}"`,
+  ];
 
   let sql = `INSERT INTO ${table} (${feilds}) VALUES(${values})`;
   console.log(sql);
