@@ -35,15 +35,23 @@ const userAddController = async (req, res) => {
     userTypeID,
     `"${userImageURL}"`,
   ];
+  const placeholder = [
+    `:id`,
+    `:firstName`,
+    `:lastName`,
+    `:email`,
+    `:userTypeID`,
+    `:userImageURL`,
+  ];
 
-  let sql = `INSERT INTO ${table} (${feilds}) VALUES(${values})`;
+  let sql = `INSERT INTO ${table} (${feilds}) VALUES (${placeholder})`;
   console.log(sql);
   // Execute query
   let isSuccess = false;
   let message = "";
   let result = null;
   try {
-    [result] = await database.query(sql);
+    [result] = await database.query(sql, req.body);
     if (result.lenght === 0) message = "No records found";
     else {
       isSuccess = true;
@@ -91,7 +99,7 @@ const studentsController = async (req, res) => {
   let message = "";
   let result = null;
   try {
-    [result] = await database.query(sql);
+    [result] = await database.query(sql, req.body);
     if (result.lenght === 0) message = "No records found";
     else {
       isSuccess = true;
