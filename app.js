@@ -1,70 +1,77 @@
 //Import -------------------------------------------
 import express from "express";
+//import cors from cors;
+
 import database from "./database.js";
+import addController from "./add.js";
+import userTable from "./Data/tables.js";
+import userFeilds from "./Data/feilds.js";
 
 //Config express app -------------------------------
 const app = new express();
+//app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 //Config middleware --------------------------------
 
 //Controllers --------------------------------------
-const userAddController = async (req, res) => {
-  console.log(req.body);
-  const id = req.body.id;
-  const firstName = req.body.firstName;
-  const lastName = req.body.lastName;
-  const email = req.body.email;
-  const userTypeID = req.body.userTypeID;
-  const userImageURL = req.body.userImageURL;
-  //Build SQL
-  const table = "users";
-  const feilds = [
-    `UserID`,
-    `FirstName`,
-    `LastName`,
-    `Email`,
-    `UserTypeID`,
-    `UserImageURL`,
-  ];
-  const values = [
-    id,
-    `"${firstName}"`,
-    `"${lastName}"`,
-    `"${email}"`,
-    userTypeID,
-    `"${userImageURL}"`,
-  ];
-  const placeholder = [
-    `:id`,
-    `:firstName`,
-    `:lastName`,
-    `:email`,
-    `:userTypeID`,
-    `:userImageURL`,
-  ];
+// const userAddController = async (req, res) => {
+//   console.log(req.body);
+//   const id = req.body.id;
+//   const firstName = req.body.firstName;
+//   const lastName = req.body.lastName;
+//   const email = req.body.email;
+//   const userTypeID = req.body.userTypeID;
+//   const userImageURL = req.body.userImageURL;
+//   //Build SQL
+//   const table = "users";
+//   const feilds = [
+//     `UserID`,
+//     `FirstName`,
+//     `LastName`,
+//     `Email`,
+//     `UserTypeID`,
+//     `UserImageURL`,
+//   ];
+//   const values = [
+//     id,
+//     `"${firstName}"`,
+//     `"${lastName}"`,
+//     `"${email}"`,
+//     userTypeID,
+//     `"${userImageURL}"`,
+//   ];
+//   const placeholder = [
+//     `:id`,
+//     `:firstName`,
+//     `:lastName`,
+//     `:email`,
+//     `:userTypeID`,
+//     `:userImageURL`,
+//   ];
 
-  let sql = `INSERT INTO ${table} (${feilds}) VALUES (${placeholder})`;
-  console.log(sql);
-  // Execute query
-  let isSuccess = false;
-  let message = "";
-  let result = null;
-  try {
-    [result] = await database.query(sql, req.body);
-    if (result.lenght === 0) message = "No records found";
-    else {
-      isSuccess = true;
-      message = "record successfully added";
-    }
-  } catch (error) {
-    message = `Failed to execute query: ${error.message}`;
-  }
-  // Responses
-  isSuccess
-    ? res.status(200).json(result)
-    : res.status(400).json({ message: message });
-};
+//   let sql = `INSERT INTO ${table} (${feilds}) VALUES (${placeholder})`;
+//   console.log(sql);
+//   // Execute query
+//   let isSuccess = false;
+//   let message = "";
+//   let result = null;
+//   try {
+//     [result] = await database.query(sql, req.body);
+//     if (result.lenght === 0) message = "No records found";
+//     else {
+//       isSuccess = true;
+//       message = "record successfully added";
+//     }
+//   } catch (error) {
+//     message = `Failed to execute query: ${error.message}`;
+//   }
+//   // Responses
+//   isSuccess
+//     ? res.status(200).json(result)
+//     : res.status(400).json({ message: message });
+// };
+
 //-----------------------------
 const studentsController = async (req, res) => {
   const id = req.params.id;
@@ -116,7 +123,10 @@ const studentsController = async (req, res) => {
 //Endpoints ---------------------------------------
 app.get(`/api/students/moduleLeader`, studentsController);
 app.get(`/api/students/moduleLeader/:id`, studentsController);
-app.post(`/api/students`, userAddController);
+//app.post(`/api/students`, addController);
+app.post(`/api/students`, (req, res) =>
+  addController(req, res, userTable, userFeilds)
+);
 //Start server ------------------------------------
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
