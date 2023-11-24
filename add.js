@@ -1,27 +1,13 @@
-import database from "./database.js";
+import queryExe from "./queryExe.js";
 //Controllers
-const addController = async (req, res, table, feilds) => {
+const addController = (req, res, table, feilds) => {
   let placeholder = getPlaceholder(feilds);
+  let data = req.body;
   let sql = `INSERT INTO ${table} (${feilds}) VALUES (${placeholder})`;
-  console.log(sql);
+  //let sql = `Call UserInsert('${table}','${feilds}','${placeholder}')`;
+
   // Execute query
-  let isSuccess = false;
-  let message = "";
-  let result = null;
-  try {
-    [result] = await database.query(sql, req.body);
-    if (result.lenght === 0) message = "No records found";
-    else {
-      isSuccess = true;
-      message = "record successfully added";
-    }
-  } catch (error) {
-    message = `Failed to execute query: ${error.message}`;
-  }
-  // Responses
-  isSuccess
-    ? res.status(200).json(result)
-    : res.status(400).json({ message: message });
+  queryExe(req, res, sql);
 };
 
 const getPlaceholder = (feilds) => {
