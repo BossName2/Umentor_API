@@ -5,7 +5,7 @@ const queryExe = async (req, res, sql) => {
   let message = "";
   let result = null;
   try {
-    [result] = await database.query(sql, [req.body]);
+    [result] = await database.query(sql, req.body);
     if (result.lenght === 0) message = "No records found";
     else {
       isSuccess = true;

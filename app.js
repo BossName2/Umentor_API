@@ -1,16 +1,14 @@
 //Import -------------------------------------------
 import express from "express";
-//import cors from cors;
-
-import addController from "./add.js";
+import cors from "cors";
+import fetchStudentsControler from "./Controlers/fetchStudents.js";
 import postControler from "./Controlers/post.js";
-import studentsController from "./fetch.js";
 import userTable from "./Data/tables.js";
 import userFeilds from "./Data/feilds.js";
 
 //Config express app -------------------------------
 const app = new express();
-//app.use(cors());
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 //Config middleware --------------------------------
@@ -19,10 +17,10 @@ app.use(express.urlencoded({ extended: true }));
 
 //Endpoints ---------------------------------------
 app.get(`/api/students/moduleLeader`, (req, res) =>
-  studentsController(req, res, userTable, userFeilds)
+  fetchStudentsControler(req, res, userTable, userFeilds)
 );
 app.get(`/api/students/moduleLeader/:id`, (req, res) =>
-  studentsController(req, res, userTable, userFeilds)
+  fetchStudentsControler(req, res, userTable, userFeilds)
 );
 app.post(`/api/students`, (req, res) =>
   postControler(req, res, userTable, userFeilds)
