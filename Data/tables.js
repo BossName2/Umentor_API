@@ -1,3 +1,2 @@
-const userTable = "users";
-
-export default userTable;
+export const user = "users";
+export const ava = "availability";
