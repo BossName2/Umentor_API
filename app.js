@@ -3,8 +3,9 @@ import express from "express";
 import cors from "cors";
 import fetchStudentsControler from "./Controlers/fetchStudents.js";
 import postControler from "./Controlers/post.js";
-import userTable from "./Data/tables.js";
-import userFeilds from "./Data/feilds.js";
+import deleteControler from "./Controlers/delete.js";
+import * as tables from "./Data/tables.js";
+import * as feilds from "./Data/feilds.js";
 
 //Config express app -------------------------------
 const app = new express();
@@ -17,15 +18,20 @@ app.use(express.urlencoded({ extended: true }));
 
 //Endpoints ---------------------------------------
 app.get(`/api/students/moduleLeader`, (req, res) =>
-  fetchStudentsControler(req, res, userTable, userFeilds)
+  fetchStudentsControler(req, res, tables.user, feilds.user)
 );
 app.get(`/api/students/moduleLeader/:id`, (req, res) =>
-  fetchStudentsControler(req, res, userTable, userFeilds)
+  fetchStudentsControler(req, res, tables.user, feilds.user)
 );
 app.post(`/api/students`, (req, res) =>
-  postControler(req, res, userTable, userFeilds)
+  postControler(req, res, tables.user, feilds.user)
 );
-
+app.post(`/api/availability`, (req, res) =>
+  postControler(req, res, tables.ava, feilds.ava)
+);
+app.delete(`/api/availability`, (req, res) =>
+  deleteControler(req, res, tables.ava, feilds.ava)
+);
 //Start server ------------------------------------
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

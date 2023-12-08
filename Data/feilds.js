@@ -1,4 +1,4 @@
-const userFeilds = [
+export const user = [
   `UserID`,
   `FirstName`,
   `LastName`,
@@ -6,5 +6,4 @@ const userFeilds = [
   `UserTypeID`,
   `UserImageURL`,
 ];
-
-export default userFeilds;
+export const ava = [`UserID`, `TimeslotID`];
