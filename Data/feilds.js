@@ -6,4 +6,6 @@ export const user = [
   `UserTypeID`,
   `UserImageURL`,
 ];
-export const ava = [`UserID`, `TimeslotID`];
+export const ava = [`UserID`, `TimeslotID`, `DayID`];
+export const days = `DayID,Day`;
+export const timeslots = `TimeslotsID,TimeStart,TimeEnd`;

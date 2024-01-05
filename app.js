@@ -4,6 +4,7 @@ import cors from "cors";
 import fetchStudentsControler from "./Controlers/fetchStudents.js";
 import postControler from "./Controlers/post.js";
 import deleteControler from "./Controlers/delete.js";
+import basicFetch from "./Controlers/basicFetch.js";
 import * as tables from "./Data/tables.js";
 import * as feilds from "./Data/feilds.js";
 
@@ -31,6 +32,12 @@ app.post(`/api/availability`, (req, res) =>
 );
 app.delete(`/api/availability`, (req, res) =>
   deleteControler(req, res, tables.ava, feilds.ava)
+);
+app.get(`/api/timeslots`, (req, res) =>
+  basicFetch(req, res, tables.timeslots, feilds.timeslots)
+);
+app.get(`/api/days`, (req, res) =>
+  basicFetch(req, res, tables.days, feilds.days)
 );
 //Start server ------------------------------------
 const PORT = process.env.PORT || 5000;
